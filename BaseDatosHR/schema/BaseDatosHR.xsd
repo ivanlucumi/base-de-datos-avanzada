@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="BaseDatosHR">
+        <xs:complexType>
+            <xs:sequence>
+
+                <xs:element name="REGIONS">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="REGION" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="REGION_ID" type="xs:integer"/>
+                                        <xs:element name="REGION_NAME" type="xs:string"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+
+                <xs:element name="COUNTRIES">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="COUNTRY" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="COUNTRY_ID">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string">
+                                                    <xs:minLength value="2"/>
+                                                    <xs:maxLength value="2"/>
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:element>
+                                        <xs:element name="COUNTRY_NAME" type="xs:string"/>
+                                        <xs:element name="REGION_ID" type="xs:integer"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+
+                <xs:element name="LOCATIONS">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="LOCATION" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="LOCATION_ID" type="xs:integer"/>
+                                        <xs:element name="STREET_ADDRESS" type="xs:string"/>
+                                        <xs:element name="POSTAL_CODE" type="xs:string" minOccurs="0"/>
+                                        <xs:element name="CITY" type="xs:string"/>
+                                        <xs:element name="STATE_PROVINCE" type="xs:string" minOccurs="0"/>
+                                        <xs:element name="COUNTRY_ID">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string">
+                                                    <xs:minLength value="2"/>
+                                                    <xs:maxLength value="2"/>
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+
+                <xs:element name="DEPARTMENTS">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="DEPARTMENT" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="DEPARTMENT_ID" type="xs:integer"/>
+                                        <xs:element name="DEPARTMENT_NAME" type="xs:string"/>
+                                        <xs:element name="MANAGER_ID" type="xs:integer" minOccurs="0"/>
+                                        <xs:element name="LOCATION_ID" type="xs:integer"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+
+                <xs:element name="JOBS">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="JOB" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="JOB_ID" type="xs:string"/>
+                                        <xs:element name="JOB_TITLE" type="xs:string"/>
+                                        <xs:element name="MIN_SALARY" type="xs:integer"/>
+                                        <xs:element name="MAX_SALARY" type="xs:integer"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+
+                <xs:element name="EMPLOYEES">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="EMPLOYEE" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="EMPLOYEE_ID" type="xs:integer"/>
+                                        <xs:element name="FIRST_NAME" type="xs:string"/>
+                                        <xs:element name="LAST_NAME" type="xs:string"/>
+                                        <xs:element name="EMAIL" type="xs:string"/>
+                                        <xs:element name="PHONE_NUMBER" type="xs:string"/>
+                                        <xs:element name="HIRE_DATE" type="xs:string"/>
+                                        <xs:element name="JOB_ID" type="xs:string"/>
+                                        <xs:element name="SALARY" type="xs:decimal"/>
+                                        <xs:element name="COMMISSION_PCT" type="xs:decimal" minOccurs="0"/>
+                                        <xs:element name="MANAGER_ID" type="xs:integer" minOccurs="0"/>
+                                        <xs:element name="DEPARTMENT_ID" type="xs:integer" minOccurs="0"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+
+                <xs:element name="JOB_HISTORY">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="HISTORY" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="EMPLOYEE_ID" type="xs:integer"/>
+                                        <xs:element name="START_DATE" type="xs:string"/>
+                                        <xs:element name="END_DATE" type="xs:string"/>
+                                        <xs:element name="JOB_ID" type="xs:string"/>
+                                        <xs:element name="DEPARTMENT_ID" type="xs:integer"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>
