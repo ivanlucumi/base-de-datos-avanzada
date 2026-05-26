@@ -1,79 +1,101 @@
--- ============================================================
--- Archivo: 01_crear_tablas_hr.sql
--- Descripción: Creación básica de tablas para la base HR
--- ============================================================
+-- --------------------------------------------------------
+-- Host:                         127.0.0.1
+-- Versión del servidor:         8.0.30 - MySQL Community Server - GPL
+-- SO del servidor:              Win64
+-- HeidiSQL Versión:             12.1.0.6537
+-- --------------------------------------------------------
+
+SET FOREIGN_KEY_CHECKS = 0;
+
+DROP TABLE IF EXISTS job_history;
+DROP TABLE IF EXISTS employees;
+DROP TABLE IF EXISTS departments;
+DROP TABLE IF EXISTS jobs;
+DROP TABLE IF EXISTS locations;
+DROP TABLE IF EXISTS countries;
+DROP TABLE IF EXISTS regions;
+
+SET FOREIGN_KEY_CHECKS = 1;
 
 CREATE TABLE regions (
-    region_id NUMBER PRIMARY KEY,
-    region_name VARCHAR2(50)
-);
+    region_id INT NOT NULL,
+    region_name VARCHAR(100) NOT NULL,
+    CONSTRAINT pk_regions PRIMARY KEY (region_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE countries (
-    country_id CHAR(2) PRIMARY KEY,
-    country_name VARCHAR2(60),
-    region_id NUMBER,
+    country_id CHAR(2) NOT NULL,
+    country_name VARCHAR(100) NOT NULL,
+    region_id INT NOT NULL,
+    CONSTRAINT pk_countries PRIMARY KEY (country_id),
     CONSTRAINT fk_countries_regions
         FOREIGN KEY (region_id)
         REFERENCES regions(region_id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE locations (
-    location_id NUMBER PRIMARY KEY,
-    street_address VARCHAR2(100),
-    postal_code VARCHAR2(20),
-    city VARCHAR2(60),
-    state_province VARCHAR2(60),
-    country_id CHAR(2),
+    location_id INT NOT NULL,
+    street_address VARCHAR(150),
+    postal_code VARCHAR(30),
+    city VARCHAR(100) NOT NULL,
+    state_province VARCHAR(100),
+    country_id CHAR(2) NOT NULL,
+    CONSTRAINT pk_locations PRIMARY KEY (location_id),
     CONSTRAINT fk_locations_countries
         FOREIGN KEY (country_id)
         REFERENCES countries(country_id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE jobs (
-    job_id VARCHAR2(20) PRIMARY KEY,
-    job_title VARCHAR2(80),
-    min_salary NUMBER,
-    max_salary NUMBER
-);
+    job_id VARCHAR(20) NOT NULL,
+    job_title VARCHAR(100) NOT NULL,
+    min_salary DECIMAL(10,2),
+    max_salary DECIMAL(10,2),
+    CONSTRAINT pk_jobs PRIMARY KEY (job_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE departments (
-    department_id NUMBER PRIMARY KEY,
-    department_name VARCHAR2(80),
-    manager_id NUMBER,
-    location_id NUMBER,
+    department_id INT NOT NULL,
+    department_name VARCHAR(100) NOT NULL,
+    manager_id INT,
+    location_id INT NOT NULL,
+    CONSTRAINT pk_departments PRIMARY KEY (department_id),
     CONSTRAINT fk_departments_locations
         FOREIGN KEY (location_id)
         REFERENCES locations(location_id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE employees (
-    employee_id NUMBER PRIMARY KEY,
-    first_name VARCHAR2(40),
-    last_name VARCHAR2(40),
-    email VARCHAR2(80),
-    phone_number VARCHAR2(30),
+    employee_id INT NOT NULL,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    phone_number VARCHAR(30),
     hire_date DATE,
-    job_id VARCHAR2(20),
-    salary NUMBER,
-    commission_pct NUMBER,
-    manager_id NUMBER,
-    department_id NUMBER,
+    job_id VARCHAR(20) NOT NULL,
+    salary DECIMAL(10,2),
+    commission_pct DECIMAL(4,2),
+    manager_id INT,
+    department_id INT,
+    CONSTRAINT pk_employees PRIMARY KEY (employee_id),
     CONSTRAINT fk_employees_jobs
         FOREIGN KEY (job_id)
         REFERENCES jobs(job_id),
     CONSTRAINT fk_employees_departments
         FOREIGN KEY (department_id)
-        REFERENCES departments(department_id)
-);
+        REFERENCES departments(department_id),
+    CONSTRAINT fk_employees_manager
+        FOREIGN KEY (manager_id)
+        REFERENCES employees(employee_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE job_history (
-    employee_id NUMBER,
-    start_date DATE,
-    end_date DATE,
-    job_id VARCHAR2(20),
-    department_id NUMBER,
-    CONSTRAINT pk_job_history
-        PRIMARY KEY (employee_id, start_date),
+    employee_id INT NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    job_id VARCHAR(20) NOT NULL,
+    department_id INT NOT NULL,
+    CONSTRAINT pk_job_history PRIMARY KEY (employee_id, start_date),
     CONSTRAINT fk_job_history_employees
         FOREIGN KEY (employee_id)
         REFERENCES employees(employee_id),
@@ -83,4 +105,4 @@ CREATE TABLE job_history (
     CONSTRAINT fk_job_history_departments
         FOREIGN KEY (department_id)
         REFERENCES departments(department_id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
